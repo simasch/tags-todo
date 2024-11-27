@@ -2,7 +2,6 @@ package ch.transgourmet.todo.api;
 
 import jakarta.annotation.PostConstruct;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -26,12 +25,11 @@ public class TodoController {
     }
 
     @GetMapping("{id}")
-    ResponseEntity<Todo> findById(@PathVariable Integer id) {
+    Todo findById(@PathVariable Integer id) {
         return todos.stream()
                 .filter(todo -> todo.id().equals(id))
                 .findAny()
-                .map(todo -> ResponseEntity.ok().body(todo))
-                .orElseGet(() -> ResponseEntity.notFound().build());
+                .orElseThrow(() -> new TodoNotFoundException(id));
     }
 
     @ResponseStatus(HttpStatus.CREATED)
@@ -41,17 +39,16 @@ public class TodoController {
     }
 
     @DeleteMapping("{id}")
-    ResponseEntity<Void> deleteById(@PathVariable Integer id) {
+    void deleteById(@PathVariable Integer id) {
         if (todos.stream()
                 .filter(todo -> todo.id().equals(id))
                 .findAny().isEmpty()) {
-            return ResponseEntity.notFound().build();
+            throw new TodoNotFoundException(id);
         }
 
         todos.stream()
                 .filter(todo -> todo.id().equals(id))
                 .findAny()
                 .ifPresent(todos::remove);
-        return ResponseEntity.noContent().build();
     }
 }

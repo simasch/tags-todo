@@ -38,5 +38,11 @@ Content-Type: application/json
   "createdAt": "{{createdAt}}"
 }
 
+> {%
+    client.test("Todo successfully created", function () {
+        client.assert(response.status === 201, "Response status is not 201");
+    });
+%}
+
 ### Delete Todo
 DELETE http://localhost:8080/todos/1
