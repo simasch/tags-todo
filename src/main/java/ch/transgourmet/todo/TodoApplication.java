@@ -1,6 +1,6 @@
 package ch.transgourmet.todo;
 
-import ch.transgourmet.todo.domain.MyService;
+import ch.transgourmet.todo.domain.TodoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.CommandLineRunner;
@@ -12,10 +12,10 @@ public class TodoApplication implements CommandLineRunner {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(TodoApplication.class);
 
-    private final MyService myService;
+    private final TodoService todoService;
 
-    public TodoApplication(MyService myService) {
-        this.myService = myService;
+    public TodoApplication(TodoService todoService) {
+        this.todoService = todoService;
     }
 
     public static void main(String[] args) {
@@ -24,6 +24,6 @@ public class TodoApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        LOGGER.info(myService.sayHello());
+        LOGGER.info(todoService.sayHello());
     }
 }

@@ -1,15 +1,14 @@
 package ch.transgourmet.todo.domain;
 
 import ch.transgourmet.todo.configuration.AppConfiguration;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 @Service
-public class MyService {
+public class TodoService {
 
     private final AppConfiguration appConfiguration;
 
-    public MyService(AppConfiguration appConfiguration) {
+    public TodoService(AppConfiguration appConfiguration) {
         this.appConfiguration = appConfiguration;
     }
 
