@@ -1,0 +1,42 @@
+### Get all todos
+GET http://localhost:8080/todos
+
+### Get one todo
+GET http://localhost:8080/todos/1
+
+### Add todo
+< {%
+    request.variables.set("createdAt", toIsoString(new Date(), true));
+
+    function toIsoString(date, full) {
+        const pad = function (num) {
+            return (num < 10 ? '0' : '') + num;
+        };
+
+        if (full) {
+            return date.getFullYear() +
+                '-' + pad(date.getMonth() + 1) +
+                '-' + pad(date.getDate()) +
+                'T' + pad(date.getHours()) +
+                ':' + pad(date.getMinutes()) +
+                ':' + pad(date.getSeconds()) +
+                '.' + pad(date.getMilliseconds());
+        } else {
+            return date.getFullYear() +
+                '-' + pad(date.getMonth() + 1) +
+                '-' + pad(date.getDate());
+        }
+    }
+%}
+
+POST http://localhost:8080/todos
+Content-Type: application/json
+
+{
+  "id": 2,
+  "text": "My todo",
+  "createdAt": "{{createdAt}}"
+}
+
+### Delete Todo
+DELETE http://localhost:8080/todos/1
