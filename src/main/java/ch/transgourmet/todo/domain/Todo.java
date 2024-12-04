@@ -21,6 +21,13 @@ public class Todo {
     private LocalDateTime createdAt;
     private boolean done;
 
+    public Todo(String text) {
+        this.text = text;
+    }
+
+    Todo() {
+    }
+
     public Integer getId() {
         return id;
     }

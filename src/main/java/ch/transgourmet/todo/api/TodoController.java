@@ -35,8 +35,7 @@ public class TodoController {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     void create(@RequestBody TodoDTO todo) {
-        var entity = new Todo();
-        entity.setText(todo.text());
+        var entity = new Todo(todo.text());
         todoRepository.save(entity);
     }
 
