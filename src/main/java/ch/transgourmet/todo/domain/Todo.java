@@ -1,6 +1,9 @@
 package ch.transgourmet.todo.domain;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -12,7 +15,6 @@ public class Todo {
 
     @Id
     @GeneratedValue
-    @Column(nullable = false)
     private Integer id;
     private String text;
     @CreatedDate
