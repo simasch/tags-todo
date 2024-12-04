@@ -1,54 +1,51 @@
 package ch.transgourmet.todo.api;
 
-import jakarta.annotation.PostConstruct;
+import ch.transgourmet.todo.domain.Todo;
+import ch.transgourmet.todo.domain.TodoRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 
 @RequestMapping("todos")
 @RestController
 public class TodoController {
 
-    private final List<Todo> todos = new ArrayList<>();
+    private final TodoRepository todoRepository;
 
-    @PostConstruct
-    void addData() {
-        todos.add(new Todo(1, "Einkaufen gehen", LocalDateTime.now(), false));
+    public TodoController(TodoRepository todoRepository) {
+        this.todoRepository = todoRepository;
     }
 
     @GetMapping
-    List<Todo> findAll() {
-        return todos;
+    List<TodoDTO> findAll() {
+        return todoRepository.findAll()
+                .stream().map(todo -> new TodoDTO(todo.getId(), todo.getText(), todo.getCreatedAt(), todo.isDone()))
+                .toList();
     }
 
     @GetMapping("{id}")
-    Todo findById(@PathVariable Integer id) {
-        return todos.stream()
-                .filter(todo -> todo.id().equals(id))
-                .findAny()
+    TodoDTO findById(@PathVariable Integer id) {
+        return todoRepository
+                .findById(id)
+                .map(todo -> new TodoDTO(todo.getId(), todo.getText(), todo.getCreatedAt(), todo.isDone()))
                 .orElseThrow(() -> new TodoNotFoundException(id));
     }
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    void create(@RequestBody Todo todo) {
-        todos.add(todo);
+    void create(@RequestBody TodoDTO todo) {
+        var entity = new Todo();
+        entity.setText(todo.text());
+        todoRepository.save(entity);
     }
 
     @DeleteMapping("{id}")
     void deleteById(@PathVariable Integer id) {
-        if (todos.stream()
-                .filter(todo -> todo.id().equals(id))
-                .findAny().isEmpty()) {
+        if (todoRepository.findById(id).isEmpty()) {
             throw new TodoNotFoundException(id);
         }
 
-        todos.stream()
-                .filter(todo -> todo.id().equals(id))
-                .findAny()
-                .ifPresent(todos::remove);
+        todoRepository.deleteById(id);
     }
 }
