@@ -13,12 +13,12 @@ class TodoRepositoryTest {
     @Autowired
     private TodoRepository todoRepository;
 
-    @Sql(statements = "insert into todo (id, text, created_at, done) values (1, 'Buy milk', current_timestamp, false)")
+    @Sql(statements = "insert into todo (id, text, created_at, done) values (10001, 'Buy milk', current_timestamp, false)")
     @Test
     void findAllAsDto() {
         var todos = todoRepository.findAllAsDto();
 
-        assertThat(todos).hasSize(1);
+        assertThat(todos).hasSize(2);
     }
 
     @Test
