@@ -25,7 +25,7 @@ public class Todo {
         this.text = text;
     }
 
-    Todo() {
+    protected Todo() {
     }
 
     public Integer getId() {
