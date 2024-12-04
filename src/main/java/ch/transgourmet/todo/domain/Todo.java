@@ -1,9 +1,6 @@
 package ch.transgourmet.todo.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -15,6 +12,7 @@ public class Todo {
 
     @Id
     @GeneratedValue
+    @Column(nullable = false)
     private Integer id;
     private String text;
     @CreatedDate
@@ -32,10 +30,6 @@ public class Todo {
         return id;
     }
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
     public String getText() {
         return text;
     }
@@ -48,15 +42,11 @@ public class Todo {
         return createdAt;
     }
 
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
     public boolean isDone() {
         return done;
     }
 
-    public void setDone(boolean done) {
-        this.done = done;
+    public void done() {
+        this.done = true;
     }
 }

@@ -19,6 +19,11 @@ public class TodoController {
 
     @GetMapping
     List<TodoDTO> findAll() {
+        return todoRepository.findAllAsDto();
+    }
+
+    @GetMapping("old")
+    List<TodoDTO> findAllOld() {
         return todoRepository.findAll()
                 .stream().map(todo -> new TodoDTO(todo.getId(), todo.getText(), todo.getCreatedAt(), todo.isDone()))
                 .toList();
